@@ -15,6 +15,7 @@ except Exception as e:
     print(e)
 
 for tutorial in yamlcontent:
+    print(f"Grabbing {tutorial}...")
     tut = f'''https://raw.githubusercontent.com/{tutorial["repository"]}/master/{tutorial["filename"]}.ipynb'''
     nbfilename = f"notebooks/{tutorial['filename']}.ipynb"
     with open(nbfilename, 'w') as tutfile:
@@ -22,9 +23,7 @@ for tutorial in yamlcontent:
         tutfile.write(r)
     
     #finally, run the stuff
+    print(f"Running {tutorial}...")
     subprocess.run(f'''jupytext --set-kernel "julia-1.10" --execute {nbfilename}''', shell=True, check=True)
-
-    #for testing...
-    #break after the first notebook
-    break
+    print(f"{tutorial} tested successfully!")
 
