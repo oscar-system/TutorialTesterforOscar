@@ -35,4 +35,4 @@ jobs:
           Pkg.add("Interact")
           Pkg.add("Plots")'
     - name: "Run python script"
-      run: python3 scraper.py 
+      run: python3 tester.py 
