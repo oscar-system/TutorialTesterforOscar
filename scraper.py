@@ -22,7 +22,7 @@ for tutorial in yamlcontent:
         tutfile.write(r)
     
     #finally, run the stuff
-    subprocess.run(f"jupyter nbconvert --to notebook --execute {nbfilename}", shell=True)
+    subprocess.run(f"jupyter nbconvert --to notebook --execute {nbfilename}", shell=True, check=True)
 
     #for testing...
     #break after the first notebook
