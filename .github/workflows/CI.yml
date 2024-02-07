@@ -7,6 +7,9 @@ on:
   schedule:
   - cron: '0 2 * * *'
 
+concurrency:
+  cancel-in-progress: ${{ startsWith(github.ref, 'refs/pull/') }}
+
 jobs:
   test_schedule:
     name: Test schedule
