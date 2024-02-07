@@ -1,0 +1,31 @@
+name: Run tests
+
+on:
+  schedule:
+  - cron: '0 2 * * *'
+
+jobs:
+  test_schedule:
+    name: Test schedule
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: "Set up Julia"
+      uses: julia-actions/setup-julia@v1
+      with:
+        version: '1.10'
+    - name: "Install Jupyter"
+      run: pip3 install notebook
+    - name: "Install julia pre-requisites"
+      run: |
+        julia -e '
+          using Pkg
+          Pkg.add("IJulia")
+          Pkg.add("Oscar")
+          Pkg.add("BenchmarkTools")
+          Pkg.add("GraphRecipes")
+          Pkg.add("Graphs")
+          Pkg.add("Interact")
+          Pkg.add("Plots")'
+    - name: "Run python script"
+      run: python3 scraper.py 
