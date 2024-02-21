@@ -39,8 +39,11 @@ jobs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
     steps:
     - id: set-matrix
-      run: echo "::set-output name=matrix::{\"node\":[$(python getter.py)]}"
+      run: |
+        ls
+        echo "::set-output name=matrix::{\"node\":[$(python getter.py)]}"
   job2:
+    needs: job1, prepare
     name: "Run tests"
     runs-on: ubuntu-latest
     strategy:
