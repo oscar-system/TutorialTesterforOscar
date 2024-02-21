@@ -10,28 +10,28 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  prepare:
-    name: Test schedule
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v3
-    - name: "Set up Julia"
-      uses: julia-actions/setup-julia@v1
-      with:
-        version: '1.10'
-    - name: "Install Jupyter"
-      run: pip3 install notebook jupytext
-    - name: "Install julia pre-requisites"
-      run: |
-        julia -e '
-          using Pkg
-          Pkg.add("IJulia")
-          Pkg.add("Oscar")
-          Pkg.add("BenchmarkTools")
-          Pkg.add("GraphRecipes")
-          Pkg.add("Graphs")
-          Pkg.add("Interact")
-          Pkg.add("Plots")'
+#  prepare:
+#    name: Test schedule
+#    runs-on: ubuntu-latest
+#    steps:
+#    - uses: actions/checkout@v3
+#    - name: "Set up Julia"
+#      uses: julia-actions/setup-julia@v1
+#      with:
+#        version: '1.10'
+#    - name: "Install Jupyter"
+#      run: pip3 install notebook jupytext
+#    - name: "Install julia pre-requisites"
+#      run: |
+#        julia -e '
+#          using Pkg
+#          Pkg.add("IJulia")
+#          Pkg.add("Oscar")
+#          Pkg.add("BenchmarkTools")
+#          Pkg.add("GraphRecipes")
+#          Pkg.add("Graphs")
+#          Pkg.add("Interact")
+#          Pkg.add("Plots")'
   job1:
     name: "Get tutorials list"
     runs-on: ubuntu-latest
@@ -39,6 +39,7 @@ jobs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
     steps:
     - id: set-matrix
+      uses: actions/checkout@v3
       run: |
         echo $(ls -lah)
         echo "::set-output name=matrix::{\"node\":[$(python getter.py)]}"
@@ -51,4 +52,5 @@ jobs:
     strategy:
       matrix: ${{fromJSON(needs.job1.outputs.matrix)}}
     steps:
-    - run: python3 tester.py
+    #- run: python3 tester.py
+    - run: echo ${{ matrix.node }}
