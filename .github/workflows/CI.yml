@@ -45,4 +45,5 @@ jobs:
     name: "Run tests"
     strategy:
       matrix: ${{fromJSON(needs.job1.outputs.matrix)}}
-    run: python3 tester.py
+    steps:
+    - run: python3 tester.py
