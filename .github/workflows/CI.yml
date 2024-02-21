@@ -12,7 +12,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  test_schedule:
+  prepare:
     name: Test schedule
     runs-on: ubuntu-latest
     steps:
@@ -34,5 +34,15 @@ jobs:
           Pkg.add("Graphs")
           Pkg.add("Interact")
           Pkg.add("Plots")'
-    - name: "Run python script"
-      run: python3 tester.py 
+  job1:
+    name: "Get tutorials list"
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - id: set-matrix
+      run: echo "::set-output name=matrix::{\"node\":[$(python getter.py)]"}"
+  job2:
+    - name: "Run tests"
+      strategy:
+        matrix: ${{fromJSON(needs.job1.outputs.matrix)}}
+      run: python3 tester.py
