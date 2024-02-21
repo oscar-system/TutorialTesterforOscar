@@ -8,12 +8,6 @@ yamlfile = requests.get(url).content
 
 yamlcontent = yaml.safe_load(yamlfile)
 
-try:
-    os.mkdir("notebooks")
-except Exception as e:
-    pass
-    #print(e)
-
 outstring=""
 
 for tut in yamlcontent:
