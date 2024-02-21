@@ -42,7 +42,7 @@ jobs:
     - id: set-matrix
       run: echo "::set-output name=matrix::{\"node\":[$(python getter.py)]"}"
   job2:
-    - name: "Run tests"
-      strategy:
-        matrix: ${{fromJSON(needs.job1.outputs.matrix)}}
-      run: python3 tester.py
+    name: "Run tests"
+    strategy:
+      matrix: ${{fromJSON(needs.job1.outputs.matrix)}}
+    run: python3 tester.py
