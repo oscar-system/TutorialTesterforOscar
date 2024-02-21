@@ -34,6 +34,7 @@ jobs:
           Pkg.add("Plots")'
   job1:
     name: "Get tutorials list"
+    runs-on: ubuntu-latest
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
     steps:
@@ -41,6 +42,7 @@ jobs:
       run: echo "::set-output name=matrix::{\"node\":[$(python getter.py)]"}"
   job2:
     name: "Run tests"
+    runs-on: ubuntu-latest
     strategy:
       matrix: ${{fromJSON(needs.job1.outputs.matrix)}}
     steps:
