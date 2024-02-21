@@ -43,7 +43,9 @@ jobs:
         ls
         echo "::set-output name=matrix::{\"node\":[$(python getter.py)]}"
   job2:
-    needs: job1, prepare
+    needs:
+    - job1
+    - prepare
     name: "Run tests"
     runs-on: ubuntu-latest
     strategy:
