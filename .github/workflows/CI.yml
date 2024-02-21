@@ -39,7 +39,7 @@ jobs:
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
     steps:
-      - id: set-matrix
+    - id: set-matrix
       run: echo "::set-output name=matrix::{\"node\":[$(python getter.py)]"}"
   job2:
     - name: "Run tests"
