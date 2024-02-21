@@ -46,7 +46,6 @@ jobs:
   job2:
     needs:
     - job1
-    - prepare
     name: "Run tests"
     runs-on: ubuntu-latest
     strategy:
