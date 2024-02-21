@@ -19,7 +19,7 @@ jobs:
     - uses: actions/checkout@v3
     - id: set-matrix
       run: |
-        echo "{matrix}={\"node\":[$(python getter.py)]}" >> $GITHUB_OUTPUT
+        echo "::set-output name=matrix::{\"node\":[$(python getter.py)]}"
   job2:
     needs:
     - job1
