@@ -2,8 +2,6 @@ name: Run tests
 
 on:
   push:
-    branches:
-      - master
   schedule:
   - cron: '0 2 * * *'
 
@@ -12,9 +10,23 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  test_schedule:
-    name: Test schedule
+  job1:
+    name: "Get tutorials list"
     runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+    - uses: actions/checkout@v3
+    - id: set-matrix
+      run: |
+        echo "::set-output name=matrix::{\"node\":[$(python getter.py)]}"
+  job2:
+    needs:
+    - job1
+    name: "Run tests"
+    runs-on: ubuntu-latest
+    strategy:
+      matrix: ${{fromJSON(needs.job1.outputs.matrix)}}
     steps:
     - uses: actions/checkout@v3
     - name: "Set up Julia"
@@ -34,5 +46,4 @@ jobs:
           Pkg.add("Graphs")
           Pkg.add("Interact")
           Pkg.add("Plots")'
-    - name: "Run python script"
-      run: python3 tester.py 
+    - run: python3 tester.py ${{ matrix.node }}
