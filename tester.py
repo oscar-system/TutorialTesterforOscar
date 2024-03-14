@@ -4,9 +4,8 @@ import subprocess
 
 print(sys.argv)
 
-repo = sys.argv[1]
-filename = sys.argv[2]
-print(f"Grabbing {repo}/{filename}...")
+repo = f"{sys.argv[1]}/{sys.argv[2]}"
+filename = sys.argv[3]
 tut = f'''https://raw.githubusercontent.com/{repo}/master/{filename}.ipynb'''
 nbfilename = f"notebooks/{filename}.ipynb"
 with open(nbfilename, 'w') as tutfile:

@@ -11,7 +11,8 @@ yamlcontent = yaml.safe_load(yamlfile)
 outstring=""
 
 for tut in yamlcontent:
-    outstring += f"""'{tut["repository"]} {tut["filename"]}', """
+    splstring = tut["repository"].split('/')
+    outstring += f"""'{splstring[0]} {splstring[1]} {tut["filename"]}', """
 
 outstring = outstring[0:-2]
 
