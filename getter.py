@@ -13,7 +13,6 @@ outstring=""
 for tut in yamlcontent:
     splstring = tut["repository"].split('/')
     outstring += f"""'{splstring[0]} {splstring[1]} {tut["filename"]}', """
-    break
 
 outstring = outstring[0:-2]
 
