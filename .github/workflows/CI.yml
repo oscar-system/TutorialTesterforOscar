@@ -47,6 +47,7 @@ jobs:
           Pkg.add("Interact")
           Pkg.add("Plots")'
     - run: mkdir -pv notebooks
+    - run: cat ~/.local/share/jupyter/kernels/julia-1.10/kernel.json 
     - run: python3 tester.py ${{ matrix.node }}
       continue-on-error: true
     - name: Upload new notebook
