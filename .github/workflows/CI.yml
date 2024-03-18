@@ -40,7 +40,7 @@ jobs:
         julia -e '
           using Pkg
           Pkg.add("IJulia")
-          Pkg.add("Oscar")
+          Pkg.add(name="Oscar", version="1.0.0")
           Pkg.add("BenchmarkTools")
           Pkg.add("GraphRecipes")
           Pkg.add("Graphs")
