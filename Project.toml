@@ -1,8 +1,0 @@
-[deps]
-BenchmarkTools = "6e4b80f9-dd63-53aa-95a3-0cdb28fa8baf"
-GraphRecipes = "bd48cda9-67a9-57be-86fa-5b3c104eda73"
-Graphs = "86223c79-3864-5bf0-83f7-82e725a168b6"
-IJulia = "7073ff75-c697-5162-941a-fcdaad2a7d2a"
-Interact = "c601a237-2ae4-5e1e-952c-7a85b0c7eef1"
-Oscar = "f1435218-dba5-11e9-1e4d-f1a5fab5fc13"
-Plots = "91a5bcdd-55d7-5caf-9e0b-520d859cae80"
