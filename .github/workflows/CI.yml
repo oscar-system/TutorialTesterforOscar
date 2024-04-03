@@ -63,7 +63,9 @@ jobs:
       if: always()
       uses: ravsamhq/notify-slack-action@2.5.0
       with:
+          token: ${{ secrets.GITHUB_TOKEN }}
           status: ${{ job.status }}
+          message_format: "{emoji} *{job}* {status_message} in <{workflow_url}"
           #notify_when: 'failure' #now that things are fixed, fire a notification even on success, for testing.
       env:
         SLACK_WEBHOOK_URL: ${{ secrets.ACTION_MONITORING_SLACK }}
