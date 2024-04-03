@@ -60,6 +60,7 @@ jobs:
         path: notebooks/*.ipynb
         retention-days: 7
     - name: Notify Slack Action
+      if: always()
       uses: ravsamhq/notify-slack-action@2.5.0
       with:
           status: ${{ job.status }}
