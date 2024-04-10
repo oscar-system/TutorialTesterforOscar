@@ -66,7 +66,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           status: ${{ job.status }}
           message_format: "{emoji} *${{matrix.node}}* {status_message} in <{run_url}>"
-          #notify_when: 'failure' #now that things are fixed, fire a notification even on success, for testing.
+          notify_when: 'failure'
       env:
         SLACK_WEBHOOK_URL: ${{ secrets.ACTION_MONITORING_SLACK }}
             
