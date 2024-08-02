@@ -5,8 +5,9 @@ import subprocess
 print(sys.argv)
 
 repo = f"{sys.argv[1]}/{sys.argv[2]}"
-filename = sys.argv[3]
-tut = f'''https://raw.githubusercontent.com/{repo}/master/{filename}.ipynb'''
+branch = {sys.argv[3]}
+filename = sys.argv[4]
+tut = f'''https://raw.githubusercontent.com/{repo}/{branch}/{filename}.ipynb'''
 nbfilename = f"notebooks/{filename}.ipynb"
 with open(nbfilename, 'w') as tutfile:
     r = requests.get(tut).content.decode()
