@@ -8,7 +8,7 @@ repo = f"{sys.argv[1]}/{sys.argv[2]}"
 branch = sys.argv[3]
 filename = sys.argv[4]
 tut = f'''https://raw.githubusercontent.com/{repo}/{branch}/{filename}.ipynb'''
-nbfilename = f"notebooks/{filename.replace("/", "_")}.ipynb"
+nbfilename = f"notebooks/{filename.replace('/', '_')}.ipynb"
 with open(nbfilename, 'w') as tutfile:
     r = requests.get(tut).content.decode()
     tutfile.write(r)
