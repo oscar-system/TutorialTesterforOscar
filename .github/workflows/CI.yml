@@ -12,7 +12,7 @@ concurrency:
 
 jobs:
   job1:
-    name: "Get tutorials list"
+    name: "Prepare Tests"
     runs-on: ubuntu-latest
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
@@ -21,23 +21,14 @@ jobs:
     - id: set-matrix
       run: |
         echo "matrix={\"node\":[$(python getter.py)]}" >> $GITHUB_OUTPUT
-  job2:
-    needs:
-    - job1
-    name: "Run tests"
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix: ${{fromJSON(needs.job1.outputs.matrix)}}
-    timeout-minutes: 30
-    steps:
-    - uses: actions/checkout@v4
-    - name: "Set up Julia"
+    - name: "Set Up Julia"
       uses: julia-actions/setup-julia@v2
       with:
         version: '1.10'
-    - name: "Install Jupyter"
-      run: pip3 install notebook jupytext
+    - uses: julia-actions/cache@v2
+      with:
+        cache-name: julia-cache;workflow=${{ github.workflow }};arch=${{ runner.arch }}
+        include-matrix: false
     - name: "Install julia pre-requisites"
       run: |
         julia -e '
@@ -49,6 +40,23 @@ jobs:
           Pkg.add("Graphs")
           Pkg.add("Interact")
           Pkg.add("Plots")'
+  job2:
+    needs:
+    - job1
+    name: "Run tests"
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix: ${{fromJSON(needs.job1.outputs.matrix)}}
+    timeout-minutes: 30
+    steps:
+    - uses: julia-actions/cache@v2
+      with:
+        cache-name: julia-cache;workflow=${{ github.workflow }};arch=${{ runner.arch }}
+        include-matrix: false
+    - uses: actions/checkout@v4
+    - name: "Install Jupyter"
+      run: pip3 install notebook jupytext
     - run: mkdir -pv notebooks
     - name: Use default julia environment
       run: |
