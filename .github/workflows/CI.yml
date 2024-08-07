@@ -33,7 +33,6 @@ jobs:
       run: |
         julia -e '
           using Pkg
-          Pkg.add("IJulia")
           Pkg.add("Oscar")
           Pkg.add("BenchmarkTools")
           Pkg.add("GraphRecipes")
@@ -54,6 +53,12 @@ jobs:
       with:
         cache-name: julia-cache;workflow=${{ github.workflow }};arch=${{ runner.arch }}
         include-matrix: false
+    - name: "Install iJulia"
+      run: |
+        julia -e '
+          using Pkg
+          Pkg.add("IJulia")
+        '
     - uses: actions/checkout@v4
     - name: "Install Jupyter"
       run: pip3 install notebook jupytext
