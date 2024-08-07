@@ -25,6 +25,10 @@ jobs:
       uses: julia-actions/setup-julia@v2
       with:
         version: '1.10'
+    - uses: julia-actions/cache@v2
+      with:
+        cache-name: julia-cache;workflow=${{ github.workflow }};ref=${{ github.run_id }}
+        include-matrix: false
     - name: "Install julia pre-requisites"
       run: |
         julia -e '
@@ -35,10 +39,6 @@ jobs:
           Pkg.add("Graphs")
           Pkg.add("Interact")
           Pkg.add("Plots")'
-    - uses: julia-actions/cache@v2
-      with:
-        cache-name: julia-cache;workflow=${{ github.workflow }};ref=${{ github.run_id }}
-        include-matrix: false
   job2:
     needs:
     - job1
