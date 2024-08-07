@@ -56,12 +56,17 @@ jobs:
     - uses: actions/checkout@v4
     - name: "Install Jupyter"
       run: pip3 install notebook jupytext
-    - name: "Install iJulia"
+    - name: "Install julia pre-requisites"
       run: |
         julia -e '
           using Pkg
+          Pkg.add("Oscar")
+          Pkg.add("BenchmarkTools")
+          Pkg.add("GraphRecipes")
+          Pkg.add("Graphs")
+          Pkg.add("Interact")
           Pkg.add("IJulia")
-        '
+          Pkg.add("Plots")'
     - run: mkdir -pv notebooks
     - name: Use default julia environment
       run: |
