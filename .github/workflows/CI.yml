@@ -51,7 +51,7 @@ jobs:
     steps:
     - uses: julia-actions/cache@v2
       with:
-        cache-name: julia-cache;workflow=${{ github.workflow }};arch=${{ runner.arch }}
+        cache-name: julia-cache;workflow=${{ github.workflow }};ref=${{ github.ref }}
         include-matrix: false
     - uses: actions/checkout@v4
     - name: "Install Jupyter"
