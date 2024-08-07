@@ -53,15 +53,15 @@ jobs:
       with:
         cache-name: julia-cache;workflow=${{ github.workflow }};arch=${{ runner.arch }}
         include-matrix: false
+    - uses: actions/checkout@v4
+    - name: "Install Jupyter"
+      run: pip3 install notebook jupytext
     - name: "Install iJulia"
       run: |
         julia -e '
           using Pkg
           Pkg.add("IJulia")
         '
-    - uses: actions/checkout@v4
-    - name: "Install Jupyter"
-      run: pip3 install notebook jupytext
     - run: mkdir -pv notebooks
     - name: Use default julia environment
       run: |
