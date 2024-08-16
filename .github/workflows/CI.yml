@@ -12,7 +12,7 @@ concurrency:
 
 jobs:
   job1:
-    name: "Get tutorials list"
+    name: "Prepare Tests"
     runs-on: ubuntu-latest
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
@@ -21,6 +21,24 @@ jobs:
     - id: set-matrix
       run: |
         echo "matrix={\"node\":[$(python getter.py)]}" >> $GITHUB_OUTPUT
+    - name: "Set Up Julia"
+      uses: julia-actions/setup-julia@v2
+      with:
+        version: '1.10'
+    - uses: julia-actions/cache@v2
+      with:
+        cache-name: julia-cache;workflow=${{ github.workflow }};ref=${{ github.run_id }}
+        include-matrix: false
+    - name: "Install julia pre-requisites"
+      run: |
+        julia -e '
+          using Pkg
+          Pkg.add("Oscar")
+          Pkg.add("BenchmarkTools")
+          Pkg.add("GraphRecipes")
+          Pkg.add("Graphs")
+          Pkg.add("Interact")
+          Pkg.add("Plots")'
   job2:
     needs:
     - job1
@@ -31,23 +49,23 @@ jobs:
       matrix: ${{fromJSON(needs.job1.outputs.matrix)}}
     timeout-minutes: 30
     steps:
-    - uses: actions/checkout@v4
-    - name: "Set up Julia"
-      uses: julia-actions/setup-julia@v2
+    - uses: julia-actions/cache@v2
       with:
-        version: '1.10'
+        cache-name: julia-cache;workflow=${{ github.workflow }};ref=${{ github.run_id }}
+        include-matrix: false
+    - uses: actions/checkout@v4
     - name: "Install Jupyter"
       run: pip3 install notebook jupytext
     - name: "Install julia pre-requisites"
       run: |
         julia -e '
           using Pkg
-          Pkg.add("IJulia")
           Pkg.add("Oscar")
           Pkg.add("BenchmarkTools")
           Pkg.add("GraphRecipes")
           Pkg.add("Graphs")
           Pkg.add("Interact")
+          Pkg.add("IJulia")
           Pkg.add("Plots")'
     - run: mkdir -pv notebooks
     - name: Use default julia environment
