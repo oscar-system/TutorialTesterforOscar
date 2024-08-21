@@ -47,7 +47,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix: ${{fromJSON(needs.job1.outputs.matrix)}}
-    timeout-minutes: 30
+    timeout-minutes: 60
     steps:
     - uses: julia-actions/cache@v2
       with:
