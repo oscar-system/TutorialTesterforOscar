@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   push:
   schedule:
-  - cron: '0 2 * * *'
+    - cron: "0 2 * * *"
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}-${{ github.ref != 'refs/heads/master' || github.run_number }}
@@ -17,31 +17,31 @@ jobs:
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
     steps:
-    - uses: actions/checkout@v4
-    - id: set-matrix
-      run: |
-        echo "matrix={\"node\":[$(python getter.py)]}" >> $GITHUB_OUTPUT
-    - name: "Set Up Julia"
-      uses: julia-actions/setup-julia@v2
-      with:
-        version: '1.10'
-    - uses: julia-actions/cache@v2
-      with:
-        cache-name: julia-cache;workflow=${{ github.workflow }};ref=${{ github.run_id }}
-        include-matrix: false
-    - name: "Install julia pre-requisites"
-      run: |
-        julia -e '
-          using Pkg
-          Pkg.add("Oscar")
-          Pkg.add("BenchmarkTools")
-          Pkg.add("GraphRecipes")
-          Pkg.add("Graphs")
-          Pkg.add("Interact")
-          Pkg.add("Plots")'
+      - uses: actions/checkout@v4
+      - id: set-matrix
+        run: |
+          echo "matrix={\"node\":[$(python getter.py)]}" >> $GITHUB_OUTPUT
+      - name: "Set Up Julia"
+        uses: julia-actions/setup-julia@v2
+        with:
+          version: "1.10"
+      - uses: julia-actions/cache@v2
+        with:
+          cache-name: julia-cache;workflow=${{ github.workflow }};ref=${{ github.run_id }}
+          include-matrix: false
+      - name: "Install julia pre-requisites"
+        run: |
+          julia -e '
+            using Pkg
+            Pkg.add("Oscar")
+            Pkg.add("BenchmarkTools")
+            Pkg.add("GraphRecipes")
+            Pkg.add("Graphs")
+            Pkg.add("Interact")
+            Pkg.add("Plots")'
   job2:
     needs:
-    - job1
+      - job1
     name: "Run tests"
     runs-on: ubuntu-latest
     strategy:
@@ -49,44 +49,43 @@ jobs:
       matrix: ${{fromJSON(needs.job1.outputs.matrix)}}
     timeout-minutes: 60
     steps:
-    - uses: julia-actions/cache@v2
-      with:
-        cache-name: julia-cache;workflow=${{ github.workflow }};ref=${{ github.run_id }}
-        include-matrix: false
-    - uses: actions/checkout@v4
-    - name: "Install Jupyter"
-      run: pip3 install notebook jupytext
-    - name: "Install julia pre-requisites"
-      run: |
-        julia -e '
-          using Pkg
-          Pkg.add("Oscar")
-          Pkg.add("BenchmarkTools")
-          Pkg.add("GraphRecipes")
-          Pkg.add("Graphs")
-          Pkg.add("Interact")
-          Pkg.add("IJulia")
-          Pkg.add("Plots")'
-    - run: mkdir -pv notebooks
-    - name: Use default julia environment
-      run: |
-        cat ~/.local/share/jupyter/kernels/julia-1.10/kernel.json | sed 's/^.*project=.*$//' > ~/.local/share/jupyter/kernels/julia-1.10/kernel.json.new
-        mv -v ~/.local/share/jupyter/kernels/julia-1.10/kernel.json.new  ~/.local/share/jupyter/kernels/julia-1.10/kernel.json
-    - run: python3 tester.py ${{ matrix.node }}
-    - name: Upload new notebook
-      uses: actions/upload-artifact@v4
-      with:
-        name: ${{ matrix.node }}
-        path: notebooks/*.ipynb
-        retention-days: 7
-    - name: Notify Slack Action
-      if: always()
-      uses: ravsamhq/notify-slack-action@2.5.0
-      with:
+      - uses: julia-actions/cache@v2
+        with:
+          cache-name: julia-cache;workflow=${{ github.workflow }};ref=${{ github.run_id }}
+          include-matrix: false
+      - uses: actions/checkout@v4
+      - name: "Install Jupyter"
+        run: pip3 install --break-system-packages notebook jupytext
+      - name: "Install julia pre-requisites"
+        run: |
+          julia -e '
+            using Pkg
+            Pkg.add("Oscar")
+            Pkg.add("BenchmarkTools")
+            Pkg.add("GraphRecipes")
+            Pkg.add("Graphs")
+            Pkg.add("Interact")
+            Pkg.add("IJulia")
+            Pkg.add("Plots")'
+      - run: mkdir -pv notebooks
+      - name: Use default julia environment
+        run: |
+          cat ~/.local/share/jupyter/kernels/julia-1.10/kernel.json | sed 's/^.*project=.*$//' > ~/.local/share/jupyter/kernels/julia-1.10/kernel.json.new
+          mv -v ~/.local/share/jupyter/kernels/julia-1.10/kernel.json.new  ~/.local/share/jupyter/kernels/julia-1.10/kernel.json
+      - run: python3 tester.py ${{ matrix.node }}
+      - name: Upload new notebook
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.node }}
+          path: notebooks/*.ipynb
+          retention-days: 7
+      - name: Notify Slack Action
+        if: always()
+        uses: ravsamhq/notify-slack-action@2.5.0
+        with:
           token: ${{ secrets.GITHUB_TOKEN }}
           status: ${{ job.status }}
           message_format: "{emoji} *${{matrix.node}}* {status_message} in <{run_url}>"
-          notify_when: 'failure,cancelled,skipped'
-      env:
-        SLACK_WEBHOOK_URL: ${{ secrets.ACTION_MONITORING_SLACK }}
-            
+          notify_when: "failure,cancelled,skipped"
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.ACTION_MONITORING_SLACK }}
