@@ -55,7 +55,7 @@ jobs:
           include-matrix: false
       - uses: actions/checkout@v4
       - name: "Install updates"
-        run: apt update && apt dist-upgrade
+        run: sudo apt update && sudo apt dist-upgrade
       - name: "Install Jupyter"
         run: pip3 install --break-system-packages notebook jupytext
       - name: "Install julia pre-requisites"
