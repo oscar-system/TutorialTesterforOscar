@@ -54,10 +54,14 @@ jobs:
           cache-name: julia-cache;workflow=${{ github.workflow }};ref=${{ github.run_id }}
           include-matrix: false
       - uses: actions/checkout@v4
-      - name: "Install updates"
-        run: sudo apt update && sudo apt dist-upgrade
       - name: "Install Jupyter"
-        run: pip3 install --break-system-packages notebook jupytext
+        run: |
+          if (( $(echo "$(pip --version | awk '{print $2}') >= 23.1" |bc -l) )); then
+            FLAG='--break-system-packages'
+          else
+            FLAG=''
+          fi
+          pip3 install $FLAG notebook jupytext
       - name: "Install julia pre-requisites"
         run: |
           julia -e '
