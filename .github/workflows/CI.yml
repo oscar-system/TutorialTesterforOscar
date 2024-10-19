@@ -49,6 +49,10 @@ jobs:
       matrix: ${{fromJSON(needs.job1.outputs.matrix)}}
     timeout-minutes: 60
     steps:
+      - name: "Set Up Julia"
+        uses: julia-actions/setup-julia@v2
+        with:
+          version: "1.10"
       - uses: julia-actions/cache@v2
         with:
           cache-name: julia-cache;workflow=${{ github.workflow }};ref=${{ github.run_id }}
