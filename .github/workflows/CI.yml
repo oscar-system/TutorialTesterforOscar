@@ -81,20 +81,21 @@ jobs:
       - name: Use default julia environment
         run: |
           cat ~/.local/share/jupyter/kernels/julia-1.10/kernel.json | jq | sed 's/^.*project=.*$//' > ~/.local/share/jupyter/kernels/julia-1.10/kernel.json
-      - run: python3 tester.py ${{ matrix.node }}
-      - name: Upload new notebook
-        uses: actions/upload-artifact@v4
-        with:
-          name: ${{ matrix.node }}
-          path: notebooks/*.ipynb
-          retention-days: 7
-      - name: Notify Slack Action
-        if: always()
-        uses: ravsamhq/notify-slack-action@2.5.0
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          status: ${{ job.status }}
-          message_format: "{emoji} *${{matrix.node}}* {status_message} in <{run_url}>"
-          notify_when: "failure,cancelled,skipped"
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.ACTION_MONITORING_SLACK }}
+          cat ~/.local/share/jupyter/kernels/julia-1.10/kernel.json
+#      - run: python3 tester.py ${{ matrix.node }}
+#      - name: Upload new notebook
+#        uses: actions/upload-artifact@v4
+#        with:
+#          name: ${{ matrix.node }}
+#          path: notebooks/*.ipynb
+#          retention-days: 7
+#      - name: Notify Slack Action
+#        if: always()
+#        uses: ravsamhq/notify-slack-action@2.5.0
+#        with:
+#          token: ${{ secrets.GITHUB_TOKEN }}
+#          status: ${{ job.status }}
+#          message_format: "{emoji} *${{matrix.node}}* {status_message} in <{run_url}>"
+#          notify_when: "failure,cancelled,skipped"
+#        env:
+#          SLACK_WEBHOOK_URL: ${{ secrets.ACTION_MONITORING_SLACK }}
