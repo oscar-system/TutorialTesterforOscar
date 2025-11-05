@@ -33,12 +33,12 @@ jobs:
         run: |
           julia -e '
             using Pkg
-            Pkg.add("Oscar")
-            Pkg.add("BenchmarkTools")
-            Pkg.add("GraphRecipes")
-            Pkg.add("Graphs")
-            Pkg.add("Interact")
-            Pkg.add("Plots")'
+            Pkg.add("Interact")'
+#            Pkg.add("Oscar")
+#            Pkg.add("BenchmarkTools")
+#            Pkg.add("GraphRecipes")
+#            Pkg.add("Graphs")
+#            Pkg.add("Plots")'
   job2:
     needs:
       - job1
@@ -70,13 +70,13 @@ jobs:
         run: |
           julia -e '
             using Pkg
-            Pkg.add("Oscar")
-            Pkg.add("BenchmarkTools")
-            Pkg.add("GraphRecipes")
-            Pkg.add("Graphs")
             Pkg.add("Interact")
-            Pkg.add("IJulia")
-            Pkg.add("Plots")'
+            Pkg.add("IJulia")'
+#            Pkg.add("Oscar")
+#            Pkg.add("BenchmarkTools")
+#            Pkg.add("GraphRecipes")
+#            Pkg.add("Graphs")
+#            Pkg.add("Plots")'
       - run: mkdir -pv notebooks
       - name: Use default julia environment
         run: |
