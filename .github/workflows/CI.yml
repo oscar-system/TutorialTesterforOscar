@@ -2,6 +2,7 @@ name: Run tests
 
 on:
   workflow_dispatch:
+  push:
   schedule:
     - cron: "0 2 * * *"
 
@@ -74,7 +75,7 @@ jobs:
             Pkg.add("GraphRecipes")
             Pkg.add("Graphs")
             Pkg.add("Interact")
-            Pkg.add(name="IJulia", version="1.31.1")
+            Pkg.add("IJulia")
             Pkg.add("Plots")'
       - run: mkdir -pv notebooks
       - name: Use default julia environment
