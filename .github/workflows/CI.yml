@@ -19,7 +19,9 @@ jobs:
       - uses: actions/checkout@v4
       - id: set-matrix
         run: |
-          echo "matrix={\"node\":[$(python getter.py)]}" >> $GITHUB_OUTPUT
+          set -e
+          NODES=$(python getter.py)
+          echo "matrix={\"node\":[${NODES}]}" >> "$GITHUB_OUTPUT"
 
   run_notebook:
     needs:
@@ -63,10 +65,16 @@ jobs:
             ])'
       - run: mkdir -pv notebooks
       - run: python3 tester.py ${{ matrix.node }}
+      - name: Sanitize artifact name
+        id: sanitize
+        run: |
+          SAFE_NAME="${{ matrix.node }}"
+          SAFE_NAME="${SAFE_NAME//\//_}"
+          echo "safe_name=$SAFE_NAME" >> "$GITHUB_OUTPUT"
       - name: Upload new notebook
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ matrix.node }}
+          name: ${{ steps.sanitize.outputs.safe_name }}
           path: notebooks/*.ipynb
           retention-days: 7
       - name: Notify Slack Action
