@@ -61,11 +61,6 @@ jobs:
               "Interact",
               "Plots",
             ])'
-      - name: "Set kernel for IJulia"
-        run: |
-          julia -e '
-            using IJulia
-            installkernel("Julia")'
       - run: mkdir -pv notebooks
       - run: python3 tester.py ${{ matrix.node }}
       - name: Upload new notebook
