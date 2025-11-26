@@ -17,4 +17,3 @@ with open(nbfilename, 'w') as tutfile:
 print(f"Running {repo}/{filename}...")
 subprocess.run(f'''jupytext --set-kernel "julia-1.10" --execute {nbfilename}''', shell=True, check=True)
 print(f"{repo}/{filename} tested successfully!")
-
