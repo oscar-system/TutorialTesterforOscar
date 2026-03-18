@@ -2,7 +2,7 @@ import os
 import requests
 import yaml
 
-url = '''https://raw.githubusercontent.com/oscar-system/oscar-website/gh-pages/_data/examples.yml'''
+url = '''https://raw.githubusercontent.com/oscar-system/oscar-website/gh-pages/_data/tutorials.yml'''
 
 yamlfile = requests.get(url).content
 
