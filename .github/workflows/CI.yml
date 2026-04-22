@@ -16,7 +16,7 @@ jobs:
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - id: set-matrix
         run: |
           set -e
@@ -40,7 +40,7 @@ jobs:
         with:
           cache-name: julia-cache;workflow=${{ github.workflow }};ref=${{ github.run_id }}
           include-matrix: false
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: "Install Jupyter"
         run: |
           if (( $(echo "$(pip --version | awk '{print $2}' | cut -d'.' -f 1,2) >= 23.1" |bc -l) )); then
