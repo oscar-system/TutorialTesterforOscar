@@ -16,7 +16,7 @@ jobs:
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - id: set-matrix
         run: |
           set -e
@@ -33,14 +33,14 @@ jobs:
     timeout-minutes: 60
     steps:
       - name: "Set Up Julia"
-        uses: julia-actions/setup-julia@v2
+        uses: julia-actions/setup-julia@v3
         with:
           version: "1.10"
-      - uses: julia-actions/cache@v2
+      - uses: julia-actions/cache@v3
         with:
           cache-name: julia-cache;workflow=${{ github.workflow }};ref=${{ github.run_id }}
           include-matrix: false
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: "Install Jupyter"
         run: |
           if (( $(echo "$(pip --version | awk '{print $2}' | cut -d'.' -f 1,2) >= 23.1" |bc -l) )); then
@@ -79,7 +79,7 @@ jobs:
           SAFE_NAME="${SAFE_NAME//\//_}"
           echo "safe_name=$SAFE_NAME" >> "$GITHUB_OUTPUT"
       - name: Upload new notebook
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: ${{ steps.sanitize.outputs.safe_name }}
           path: notebooks/*.ipynb
