@@ -59,7 +59,6 @@ jobs:
               "BenchmarkTools",
               "GraphRecipes",
               "Graphs",
-              "Interact",
               "Plots",
             ])'
       - run: mkdir -pv notebooks
