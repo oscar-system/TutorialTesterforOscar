@@ -50,17 +50,25 @@ jobs:
           fi
           pip3 install $FLAG notebook jupytext
       - name: "Install julia pre-requisites"
+        env:
+          IJULIA_NODEFAULTKERNEL: 1
         run: |
           julia -e '
             using Pkg
-            Pkg.add(name="IJulia", version="1.31.1")
             Pkg.add([
+              "IJulia",
               "Oscar",
               "BenchmarkTools",
               "GraphRecipes",
               "Graphs",
               "Plots",
             ])'
+      - name: "Install IJulia kernel"
+        run: |
+          julia -e '
+            using IJulia
+            IJulia.installkernel("Julia")
+          '
       - run: mkdir -pv notebooks
       - run: python3 tester.py ${{ matrix.node }}
       - name: Sanitize artifact name
