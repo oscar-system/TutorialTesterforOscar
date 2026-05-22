@@ -61,7 +61,6 @@ jobs:
               "BenchmarkTools",
               "GraphRecipes",
               "Graphs",
-              "Interact",
               "Plots",
             ])'
       - name: "Install IJulia kernel"
